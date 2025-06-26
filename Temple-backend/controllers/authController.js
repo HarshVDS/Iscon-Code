@@ -164,7 +164,7 @@ export const forgotPassword = async (req, res) => {
   user.resetPasswordExpires = Date.now() + 3600000; // 1 hr
   await user.save();
 
-  const resetLink = `http://localhost:3000/reset-password/${token}`;
+  const resetLink = `https://iscon-f.vercel.app/reset-password/${token}`;
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
