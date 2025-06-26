@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from "../utils/api";
 
 const Reg = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const Reg = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:4000/api/approval/approve", {
+      const response = await fetch(`${api}/approval/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

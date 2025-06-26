@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../utils/api";
 
 const Becomevolunteer = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -30,7 +31,7 @@ const Becomevolunteer = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await api.get("/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -69,10 +70,7 @@ const Becomevolunteer = () => {
     };
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/volunteers/register",
-        payload
-      );
+      const res = await api.post("/volunteers/register", payload);
       toast.success("Volunteer form submitted successfully!");
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {

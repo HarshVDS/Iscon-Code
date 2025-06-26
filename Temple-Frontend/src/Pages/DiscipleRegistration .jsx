@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from "../utils/api";
 
 const DiscipleRegistration = () => {
   const [formData, setFormData] = useState({
@@ -26,12 +27,15 @@ const DiscipleRegistration = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/api/disciples/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await api.post("/disciples/register", formData);
 
+
+      
+      //   const res = await fetch(`${api}/disciples/register`, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify(formData),
+      //   });
       const data = await res.json();
 
       if (res.ok) {

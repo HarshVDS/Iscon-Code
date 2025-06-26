@@ -157,8 +157,8 @@
 
 // ForgotPassword.js
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../utils/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -171,7 +171,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:4000/api/users/forgot-password', { email });
+      const res = await api.post(`/users/forgot-password`, { email });
       setMessage(res.data.message);
       setError('');
     } catch (err) {
