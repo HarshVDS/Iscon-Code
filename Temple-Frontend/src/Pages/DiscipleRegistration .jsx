@@ -25,6 +25,7 @@ const DiscipleRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log('Submitting formData:', formData);
     try {
       const res = await fetch("https://iscon-b.vercel.app/api/disciples/register", {
         method: "POST",
@@ -32,14 +33,16 @@ const DiscipleRegistration = () => {
         body: JSON.stringify(formData),
       });
 
+      console.log('Response status:', res.status);
       const data = await res.json();
+      console.log('Response data:', data);
 
       if (res.ok) {
         toast.success("Registration submitted successfully!");
         setFormData({
           fullName: "",
           dateOfBirth: "",
-          address: "",
+          address: "",  
           contactNumber: "",
           discipleEmail: "",
           templePresidentEmail: "",
@@ -50,6 +53,7 @@ const DiscipleRegistration = () => {
         toast.error(data.message || "Something went wrong.");
       }
     } catch (err) {
+      console.error('Network or fetch error:', err);
       toast.error("Network error. Please try again.");
     }
   };
