@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const DiscipleRegistration = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     dateOfBirth: "",
@@ -25,42 +28,37 @@ const DiscipleRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Submitting formData:', formData);
     try {
-      const res = await fetch("https://iscon-b.vercel.app/api/disciples/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await api.post("/disciples/register", formData);
 
-      console.log('Response status:', res.status);
-      const data = await res.json();
-      console.log('Response data:', data);
+      const data = await res.data;
 
-      if (res.ok) {
-        toast.success("Registration submitted successfully!");
+      if (res.status === 200) {
+        toast.success(data.message || "Registration submitted successfully!");
+        navigate("/");
         setFormData({
           fullName: "",
           dateOfBirth: "",
-          address: "",  
+          address: "",
           contactNumber: "",
           discipleEmail: "",
           templePresidentEmail: "",
           initiationDate: "",
           initiationName: "",
+          
         });
+
       } else {
         toast.error(data.message || "Something went wrong.");
       }
     } catch (err) {
-      console.error('Network or fetch error:', err);
-      toast.error("Network error. Please try again.");
+      toast.error(err.response?.data?.message || "Something went wrong.");
     }
   };
 
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer />   
       <div className="page-title-area bg-1">
         <div className="container">
           <div className="page-title-content">
