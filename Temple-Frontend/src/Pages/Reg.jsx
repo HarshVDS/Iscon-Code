@@ -34,7 +34,7 @@ const Reg = () => {
       return;
     }
     try {
-      const response = await fetch(`${api}/approval/approve`, {
+      const response = await fetch(`https://iscon-b.vercel.app/api/approval/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
