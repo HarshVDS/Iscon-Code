@@ -27,13 +27,14 @@ const DiscipleRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const res = await api.post("/disciples/register", formData);
-
-      const data = await res.data;
-
-      if (res.status === 200) {
+      const data = res.data;
+      console.log(res.status);
+      console.log("Response:", data);
+      
+      if (res.status === 200 || res.status === 201) {
         toast.success(data.message || "Registration submitted successfully!");
         navigate("/");
         setFormData({
@@ -45,16 +46,17 @@ const DiscipleRegistration = () => {
           templePresidentEmail: "",
           initiationDate: "",
           initiationName: "",
-          
         });
-
       } else {
         toast.error(data.message || "Something went wrong.");
       }
+  
     } catch (err) {
+      console.error("Error submitting form:", err);
       toast.error(err.response?.data?.message || "Something went wrong.");
     }
   };
+  
 
   return (
     <div>

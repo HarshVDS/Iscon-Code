@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(cors({
     origin: 'https://iscon-f.vercel.app',
     credentials: true,
-
+    
 }))
 // dotenv.config()
 
