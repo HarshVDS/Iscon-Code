@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const { token } = useParams();
   const navigate = useNavigate();
@@ -15,18 +15,16 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
     setLoading(true);
     try {
       const res = await api.post('/users/reset-password', { token, password });
-      setSuccess(res.data.message);
-      setError('');
+      toast.success(res.data.message || "Password reset successful!");
       setTimeout(() => navigate('/login'), 3000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong');
-      setSuccess('');
+      toast.error(err.response?.data?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -34,6 +32,7 @@ const ResetPassword = () => {
 
   return (
     <div>
+      <ToastContainer />
       <div className="page-title-area bg-8">
         <div className="container">
           <div className="page-title-content">
@@ -53,8 +52,6 @@ const ResetPassword = () => {
             <div className="account-title">
               <h2>Set New Password</h2>
             </div>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {success && <div className="alert alert-success">{success}</div>}
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-12">

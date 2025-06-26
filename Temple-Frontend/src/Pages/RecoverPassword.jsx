@@ -159,11 +159,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -172,11 +172,9 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const res = await api.post(`/users/forgot-password`, { email });
-      setMessage(res.data.message);
-      setError('');
+      toast.success(res.data.message || "Password reset link sent!");
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong');
-      setMessage('');
+      toast.error(err.response?.data?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -184,6 +182,7 @@ const ForgotPassword = () => {
 
   return (
     <div>
+      <ToastContainer />
       <div className="page-title-area bg-8">
         <div className="container">
           <div className="page-title-content">
@@ -204,8 +203,6 @@ const ForgotPassword = () => {
               <h3 className="form-title">Reset Password!</h3>
               <p className="reset-desc">Enter the email of your account to reset the password. Then you will receive a link to email to reset the password.</p>
             </div>
-            {error && <div className="alert alert-danger">{error}</div>}
-            {message && <div className="alert alert-success">{message}</div>}
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-12">

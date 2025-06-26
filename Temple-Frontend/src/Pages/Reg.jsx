@@ -45,14 +45,23 @@ const Reg = () => {
           referrerEmail: formData.email
         }),
       });
-      const data = await response.json();
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
       if (response.ok) {
         toast.success("User approved and saved successfully!", {
           onClose: () => navigate("/"),
           autoClose: 2000
         });
       } else {
-        toast.error(data.message || "Error approving user.");
+        // Show backend message if available, else show status code
+        const errorMsg = data.message || `Error: ${response.status} ${response.statusText}`;
+        toast.error(errorMsg);
       }
     } catch (error) {
       toast.error("Network error: " + error.message);
