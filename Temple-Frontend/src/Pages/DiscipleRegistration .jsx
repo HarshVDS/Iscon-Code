@@ -35,7 +35,7 @@ const DiscipleRegistration = () => {
       //     method: "POST",
       //     headers: { "Content-Type": "application/json" },
       //     body: JSON.stringify(formData),
-      y
+      
       const data = await res.json();
 
       if (res.ok) {
