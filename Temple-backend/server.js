@@ -15,11 +15,16 @@ const port = process.env.PORT || 4000
 connectDB()
 
 app.use(express.json())
+// CORS configuration: allow frontend domain and handle credentials
 app.use(cors({
     origin: 'https://iscon-f.vercel.app',
     credentials: true,
-
-}))
+}));
+// Explicitly handle preflight requests for all routes
+app.options('*', cors({
+    origin: 'https://iscon-f.vercel.app',
+    credentials: true,
+}));
 // dotenv.config()
 
 app.use('/api/users', userRouter)
